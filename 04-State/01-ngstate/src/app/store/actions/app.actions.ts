@@ -1,11 +1,12 @@
-import { Action } from "@ngrx/store";
+import { Action } from '@ngrx/store';
 
 export enum AppActionTypes {
-  ChangeTitle = "[App] ChangeTitle",
-  SetSideNavEnabled = "[App] SetSideNavEnabled",
-  ToggleSideNavVisible = "[App] ToggleSideNavVisible",
-  ChangeSideNavVisible = "[App] ChangeSideNavVisible",
-  ChangeSideNavPosition = "[App] ChangeSideNavPosition"
+  ChangeTitle = '[App] ChangeTitle',
+  SetSideNavEnabled = '[App] SetSideNavEnabled',
+  ToggleSideNavVisible = '[App] ToggleSideNavVisible',
+  ChangeSideNavVisible = '[App] ChangeSideNavVisible',
+  ChangeSideNavPosition = '[App] ChangeSideNavPosition',
+  ToggleEditor = '[App] EditorVisiable'
 }
 
 export class ChangeTitleAction implements Action {
@@ -32,9 +33,14 @@ export class ChangeSideNavPosition implements Action {
   constructor(public payload: string) {}
 }
 
+export class ToggleEditor implements Action {
+  readonly type = AppActionTypes.ToggleEditor;
+}
+
 export type AppActions =
   | ChangeTitleAction
   | ToggleSideNavVisible
   | ChangeSideNavPosition
   | ChangeSideNavVisible
-  | SetSideNavEnabled;
+  | SetSideNavEnabled
+  | ToggleEditor;

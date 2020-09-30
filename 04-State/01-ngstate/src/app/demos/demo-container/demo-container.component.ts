@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Event, NavigationEnd, Router } from '@angular/router';
-import { filter, map, mergeMap } from 'rxjs/operators';
-import { EventBusService } from 'src/app/shared/eventbus/event-bus.service';
-import { SidebarActions } from 'src/app/shared/sidebar/sidebar-actions';
-import { MenuFacade } from 'src/app/store/facades/menu.facade';
-import { environment } from 'src/environments/environment';
-import { DemoItem } from '../demo-item.model';
-import { DemoFacade } from '../store/facades/demo.facade';
+import {Component, OnInit} from '@angular/core';
+import {Event, NavigationEnd, Router} from '@angular/router';
+import {filter, map, mergeMap} from 'rxjs/operators';
+import {EventBusService} from 'src/app/shared/eventbus/event-bus.service';
+import {MenuFacade} from 'src/app/store/facades/menu.facade';
+import {environment} from 'src/environments/environment';
+import {DemoItem} from '../demo-item.model';
+import {DemoFacade} from '../store/facades/demo.facade';
+import {AppState} from '../../store/reducers/app.reducer';
+import {Store} from '@ngrx/store';
+import {getEditorVisible} from '../../store/selectors/app.selector';
 
 @Component({
   selector: 'app-demo-container',
@@ -18,7 +20,8 @@ export class DemoContainerComponent implements OnInit {
     public mf: MenuFacade,
     private router: Router,
     private df: DemoFacade,
-    private eb: EventBusService
+    private eb: EventBusService,
+    private store: Store<AppState>
   ) {}
 
   title: string = environment.title;
@@ -28,9 +31,7 @@ export class DemoContainerComponent implements OnInit {
   current: DemoItem = this.demos$ != null ? this.demos$[0] : null;
   menuVisible$ = this.mf.sideNavVisible;
   menuPosition$ = this.mf.sideNavPosition;
-  showEditor$ = this.eb.Commands.pipe(
-    map((action) => (action === SidebarActions.HIDE_MARKDOWN ? false : true))
-  );
+  showEditor$ = this.store.select(getEditorVisible);
 
   ngOnInit() {
     this.df.initData();
